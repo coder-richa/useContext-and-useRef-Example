@@ -1,0 +1,25 @@
+.label {
+  color: #000;
+  font-weight: bolder;
+}
+
+.label .isInvalid {
+  color: red;
+}
+
+.label .isValid {
+  color: green;
+}
+
+.required:after {
+  content: " *";
+  color: red;
+}
+
+.label-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}

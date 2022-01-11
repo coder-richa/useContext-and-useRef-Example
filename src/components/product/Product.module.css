@@ -1,0 +1,22 @@
+.product-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: row wrap;
+}
+.product-grid {
+  flex: 1 1 25%;
+  margin: 2%;
+  padding: 12px;
+  border: 2px solid #000;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.prod-grid img {
+  width: 100%;
+}
+.center {
+  text-align: center;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
