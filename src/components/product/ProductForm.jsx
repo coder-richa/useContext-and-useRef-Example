@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import propTypes from "prop-types";
 import Form from "../ui/form/Form";
 import Input from "../ui/form/Input";
@@ -22,12 +22,22 @@ const ProductForm = (props) => {
    */
   const [error, setError] = useState(null);
   // Retrieve the context values (function references)
-  const { addProduct } = useContext(ProductContext);
+  const { addProduct, editProduct, selectedProduct } =
+    useContext(ProductContext);
   //  References to the form inputs
-  const title = useRef(props.title);
-  const price = useRef(props.price);
-  const description = useRef(props.description);
-  const date = useRef(props.date);
+  const title = useRef(selectedProduct?.title ?? "");
+  const price = useRef(selectedProduct?.price ?? 0);
+  const description = useRef(selectedProduct?.description ?? "");
+  const date = useRef(getISOString(selectedProduct.date ?? new Date()));
+
+  // Hook to update component state when the selectedProduct changes
+  useEffect(() => {
+    // Update ref values so that the form inputs are populated with the selectedProduct values
+    title.current.value = selectedProduct?.title ?? "";
+    price.current.value = selectedProduct?.price ?? 0;
+    description.current.value = selectedProduct?.description ?? "";
+    date.current.value = selectedProduct?.date ?? getISOString(new Date());
+  }, [selectedProduct]);
 
   // Event handler for the dismissing of the modal
   const onConfirmHandler = () => {
@@ -35,12 +45,11 @@ const ProductForm = (props) => {
     setError(null);
   };
   // Form submission handler
-  const addProductHandler = (event) => {
+  const submitProductHandler = (event) => {
     // Prevent default form submission
     event.preventDefault();
     //  Create object from form inputs
     const userInput = {
-      id: props?.id ?? new Date().toTimeString(),
       title: title.current.value,
       price: Number(price.current.value),
       description: description.current.value,
@@ -62,12 +71,18 @@ const ProductForm = (props) => {
       });
       return;
     }
-    // If the form inputs are not empty, then add the product to the database
-    addProduct(userInput);
+    userInput.id = selectedProduct?.id ?? new Date().toTimeString();
+    // If the form inputs are not empty, check for edit/add product
+    if (!(selectedProduct?.id ?? false)) {
+      // then add the product to the database
+      addProduct(userInput);
+    } else {
+      editProduct(userInput);
+    }
     // Reset Form
     title.current.value = "";
     price.current.value = "";
-    date.current.value = "";
+    date.current.value = getISOString(new Date());
     description.current.value = "";
     // Move cursor to the title input
     title.current.focus();
@@ -84,7 +99,7 @@ const ProductForm = (props) => {
       )}
 
       <Card>
-        <Form onSubmit={addProductHandler}>
+        <Form onSubmit={submitProductHandler}>
           <Row>
             <Column className='is-one-half'>
               <Label htmlFor='title'>{props.titleLabel}</Label>
@@ -120,31 +135,19 @@ const ProductForm = (props) => {
 
 // PropTypes define the types of values that are passed to the components
 ProductForm.propTypes = {
-  title: propTypes.string,
-  price: propTypes.number,
-  date: propTypes.string,
-  description: propTypes.string,
-  id: propTypes.string,
   titleLabel: propTypes.string,
   priceLabel: propTypes.string,
   dateLabel: propTypes.string,
   descriptionLabel: propTypes.string,
-  isEditOperation: propTypes.bool,
   submitButtonText: propTypes.string,
 };
 
 // Default Props of the component
 ProductForm.defaultProps = {
-  title: "",
-  price: 0,
-  date: getISOString(new Date()),
-  description: "",
-  id: new Date().getTime().toString(),
   titleLabel: "Product Name",
   priceLabel: "Price",
   dateLabel: "Date",
   descriptionLabel: "Description",
-  isEditOperation: false,
   submitButtonText: "Save",
 };
 

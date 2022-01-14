@@ -3,20 +3,14 @@ import propTypes from "prop-types";
 import classes from "./ProductManager.module.css";
 import ProductForm from "./ProductForm";
 import ProductList from "./ProductList";
-import { ProductContextProvider } from "../../contexts/ProductContext";
-import { products } from "../../data/products";
-// This Component is responsible for managing the products
-// It has a form and a list of products
+//  Holds data for product listing and CRUD operations
 const ProductManager = (props) => {
   return (
-    // Pass the products to the context provider
-    <ProductContextProvider products={products} selectedProduct={products[0]}>
-      <div className={classes.container}>
-        <h1 className={classes.title}>{props.title}</h1>
-        <ProductForm />
-        <ProductList />
-      </div>
-    </ProductContextProvider>
+    <div className={classes.container}>
+      <h1 className={classes.title}>{props.title}</h1>
+      <ProductForm />
+      <ProductList />
+    </div>
   );
 };
 

@@ -6,7 +6,7 @@ import { formatCurrency } from "../../utility/numberFunctions";
 import { formatDate } from "../../utility/dateFunctions";
 import { ProductContext } from "../../contexts/ProductContext";
 const Product = (props) => {
-  const { deleteProduct } = useContext(ProductContext);
+  const { changeSelectedProduct, deleteProduct } = useContext(ProductContext);
   const { product, title, price, date, description } = props;
   return (
     <div className={classes["product-container"]}>
@@ -16,6 +16,13 @@ const Product = (props) => {
         <p className={classes["center"]}>{formatDate(date)}</p>
         <p className={classes["center"]}>{description}</p>
         <p className={classes["center"]}>
+          <Button
+            type='button'
+            className='primary'
+            onClick={() => changeSelectedProduct(product)}
+          >
+            Edit
+          </Button>
           <Button
             type='button'
             className='danger'
