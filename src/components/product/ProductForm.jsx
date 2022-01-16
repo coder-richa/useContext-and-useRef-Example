@@ -28,7 +28,9 @@ const ProductForm = (props) => {
   const title = useRef(selectedProduct?.title ?? "");
   const price = useRef(selectedProduct?.price ?? 0);
   const description = useRef(selectedProduct?.description ?? "");
-  const date = useRef(getISOString(selectedProduct.date ?? new Date()));
+  const date = useRef(
+    getISOString(selectedProduct?.date ?? getISOString(new Date()))
+  );
 
   // Hook to update component state when the selectedProduct changes
   useEffect(() => {

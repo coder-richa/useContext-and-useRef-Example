@@ -13,7 +13,7 @@ import { products } from "./data/products";
  */
 ReactDOM.render(
   <React.StrictMode>
-    <ProductContextProvider products={products} selectedProduct={products[0]}>
+    <ProductContextProvider products={products}>
       <ProductManager />
     </ProductContextProvider>
   </React.StrictMode>,
